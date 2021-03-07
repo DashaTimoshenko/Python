@@ -27,7 +27,7 @@ class Lab1:
             func(a, b)
             t2 = time.time()
             print(str(t2 - t1) + ": " + func.__name__)
-            with open("loading_time.csv", "w") as file_t:
+            with open("loading_time.txt", "w") as file_t:
                 file_t.write('Data was loaded in '+str(t2 - t1)+' seconds\n')
 
         return f
