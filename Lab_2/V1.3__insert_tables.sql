@@ -246,8 +246,7 @@ SELECT DISTINCT min(educational_institution.institution_id), educational_institu
 from educational_institution
 left join place_view on(
 educational_institution.locality_id = place_view.locality_id)
-group by educational_institution.institution_name, place_view.region_name, place_view.district_name, place_view.locality_name
-);
+group by educational_institution.institution_name, place_view.region_name, place_view.district_name, place_view.locality_name;
 ------------------------------------------------------------------------------------------------------
 
 
