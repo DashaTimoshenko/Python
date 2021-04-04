@@ -274,7 +274,9 @@ test_tb.classlangname = languages.lang_name)
 left join class_profiles on(
 test_tb.classprofilename = class_profiles.profile_name)
 left join eo_types on(
-test_tb.eotypename = eo_types.eo_type_name)	
+test_tb.eotypename = eo_types.eo_type_name)
+left join eo_parents on(
+test_tb.eoparent = eo_parents.parent_name)	
 left join educational_institution on(
 place_view.locality_id = educational_institution.locality_id and
 test_tb.eoname = educational_institution.institution_name and
