@@ -278,7 +278,8 @@ test_tb.eotypename = eo_types.eo_type_name)
 left join educational_institution on(
 place_view.locality_id = educational_institution.locality_id and
 test_tb.eoname = educational_institution.institution_name and
-eo_types.eo_type_id = educational_institution.eo_type_id
+eo_types.eo_type_id = educational_institution.eo_type_id and
+eo_parents.parent_id = educational_institution.parent_id
 ) 
 where test_tb.outid IS NOT NULL
 ON CONFLICT (out_id) DO NOTHING;
