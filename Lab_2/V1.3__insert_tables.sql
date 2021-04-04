@@ -242,7 +242,7 @@ ON CONFLICT (institution_name, locality_id, eo_type_id, parent_id) DO NOTHING;
 
 CREATE OR REPLACE VIEW eo_view
 AS
-SELECT DISTINCT min(educational_institution.institution_id), educational_institution.institution_name, place_view.region_name, place_view.district_name, place_view.locality_name
+SELECT DISTINCT min(educational_institution.institution_id) as institution_id, educational_institution.institution_name, place_view.region_name, place_view.district_name, place_view.locality_name
 from educational_institution
 left join place_view on(
 educational_institution.locality_id = place_view.locality_id)
