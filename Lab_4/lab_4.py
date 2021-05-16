@@ -75,19 +75,19 @@ def import_data(file_name, ins_rows_count):
 
 
 # -----------------------------------------------------------------------
-# len_file_list = len(Config.file_list)
-# t1 = time.time()
-# for ind in range(len_file_list):
-#
-#     if check_coll.count_documents({'file_name': Config.file_list[ind]}) == 0:
-#         check_coll.insert_one({'file_name': Config.file_list[ind], 'rows_count': 0, 'end_file': False})
-#
-#     inserted_rows_count = check_coll.find_one({'file_name': Config.file_list[ind]})
-#     import_data(Config.file_list[ind], inserted_rows_count['rows_count'])
-# t2 = time.time()
-# print('Data was loaded in ' + str(t2 - t1) + ' seconds\n')
-# with open("loading_time.txt", "w") as file_t:
-#     file_t.write('Data was loaded in ' + str(t2 - t1) + ' seconds\n')
+len_file_list = len(Config.file_list)
+t1 = time.time()
+for ind in range(len_file_list):
+
+     if check_coll.count_documents({'file_name': Config.file_list[ind]}) == 0:
+         check_coll.insert_one({'file_name': Config.file_list[ind], 'rows_count': 0, 'end_file': False})
+
+     inserted_rows_count = check_coll.find_one({'file_name': Config.file_list[ind]})
+     import_data(Config.file_list[ind], inserted_rows_count['rows_count'])
+t2 = time.time()
+print('Data was loaded in ' + str(t2 - t1) + ' seconds\n')
+with open("loading_time.txt", "w") as file_t:
+     file_t.write('Data was loaded in ' + str(t2 - t1) + ' seconds\n')
 
 
 
