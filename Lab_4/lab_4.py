@@ -55,7 +55,7 @@ def import_data(file_name, ins_rows_count):
                     i = 1
                     my_list = []
                 except:
-                    pass
+                    return -1
 
                 continue
                 # break
