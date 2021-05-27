@@ -14,3 +14,9 @@
     UPDATE –оновлення інформації про кількість товару в певному контейнері(таблиця Storage)
 
     DELETE –  видалення складу, контейнеру, продукту та записів про зберігання цього продукту
+
+Слої:
+•	database layer -- БД Postresql.
+•	persistence layer -- файл models.py
+•	business layer -- файли app.py, query.py.
+•	presentation layer -- html-файли.
