@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Task Master</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1 style="text-align: center">Warehouses</h1>
+    {% if warehouses|length < 1 %}
+    <h4 style="text-align: center">There are no warehouses. Create one below!</h4>
+    {% else %}
+    <table>
+        <tr>
+            <th>warehouse_id</th>
+            <th>warehouse_name</th>
+            <th>Actions</th>
+        </tr>
+        {% for row in warehouses %}
+            <tr>
+                <td>{{ row.warehouse_id }}</td>
+                <td>{{ row.warehouse_name }}</td>
+                <td>
+{#                    <a href="/delete/{{row.warehouse_id}}">Delete</a>#}
+{#                    <br>#}
+                    <form style="display: inline-block" action="/warehouse_crud/delete/{{ row.warehouse_id }}"
+                                              method="POST">
+                                            <input type="hidden" value="{{ row.warehouse_id }}"/>
+                                            <button id="btndel" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Вы уверены, что хотите удалить?')">
+                                                Delete
+                                            </button>
+                                        </form>
+{#                    <a href="/update/{{task.id}}">Update</a>#}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    <div class="form">
+        <form action="/warehouse_crud" method="POST">
+            <input type="text" name="warehouse_id" id="warehouse_id" placeholder="warehouse_id" required>
+            <input type="text" name="warehouse_name" id="warehouse_name" placeholder="warehouse_name" required>
+            <input type="submit" value="Add warehouse">
+        </form>
+    </div>
+</div>
+{% endblock %}

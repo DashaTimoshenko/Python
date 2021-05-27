@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Task Master</title>
+{% endblock %}
+
+{% block body %}
+    <div class="content" style="width: 720px;">
+        <h1 style="text-align: center">Storage</h1>
+        {% if storages|length < 1 %}
+            <h4 style="text-align: center">There are no storages. Create one below!</h4>
+        {% else %}
+            <table>
+                <tr>
+                    <th>warehouse_name</th>
+                    <th>container_number</th>
+                    <th>product_code</th>
+                    <th>product_name</th>
+                    <th>quantity</th>
+                    <th>unit</th>
+                    <th>Actions</th>
+                </tr>
+                {% for row in storages %}
+                    <tr>
+                        <td>{{ row.warehouse_name }}</td>
+                        <td>{{ row.container_number }}</td>
+                        <td>{{ row.product_code }}</td>
+                        <td>{{ row.product_name }}</td>
+                        <td>{{ row.quantity }}</td>
+                        <td>{{ row.unit }}</td>
+                        <td>
+                            {#                    <a href="/delete/{{row.warehouse_id}}">Delete</a>#}
+                            {#                    <br>#}
+                            <form style="display: inline-block"
+                                  action="/storage_crud/delete/{{ row.container_id }}/{{ row.product_id }}"
+                                  method="POST">
+                                <input type="hidden" value="{{ row.container_id }}"/>
+                                <input type="hidden" value="{{ row.product_id }}"/>
+                                <button id="btndel" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Вы уверены, что хотите удалить?')">
+                                    Delete
+                                </button>
+                            </form><br>
+{#                            <form style="display: inline-block"#}
+{#                                  action="/storage_crud/update/{{ row.container_id }}/{{ row.product_id }}"#}
+{#                                  method="PUT">#}
+{#                                <input type="hidden" value="{{ row.container_id }}"/>#}
+{#                                <input type="hidden" value="{{ row.product_id }}"/>#}
+                                <button id="btndel" class="btn btn-danger btn-sm">
+                                    <a href="/storage_crud/update/{{ row.container_id }}/{{ row.product_id }}" style="text-decoration: none; color: black;">Update</a>
+                                </button>
+{#                            </form>#}
+                            {#                    <a href="/update/{{task.id}}">Update</a>#}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+
+        <div class="form">
+            <form action="/storage_crud" method="POST">
+                <select id="warehouse_id" name="warehouse_id" size="1" style="width: 177px; height: 22px; margin-bottom: 5px"
+                        onchange="choice_category(this)">
+                    {% for warehouse in warehouses %}
+                        <option value={{ warehouse.warehouse_id }}> {{ warehouse.warehouse_name }} </option>
+                    {% endfor %}
+                </select>
+                <select id="container_number" name="container_number" size="1" style="width: 177px; height: 22px; margin-bottom: 5px">
+                    {#                {% for warehouse in warehouses %}#}
+                    {#                  <option  value={{ warehouse.warehouse_id }}> {{ warehouse.warehouse_name }} </option>#}
+                    {#                {% endfor %}#}
+                </select>
+                <br>
+                {#            <input type="text" name="container_number" id="container_number" placeholder="container_number">#}
+                <input type="text" name="product_code" id="product_code" placeholder="product_code" required>
+                <input type="number" step="0.01" min="0" placeholder="0,00" name="quantity" id="quantity" required>
+                <input type="submit" value="Add row">
+            </form>
+
+            <script type="text/javascript">
+                function choice_category(selectObject) {
+                    var tmp_id = selectObject.value;
+                    if (tmp_id == 0) {
+                        document.getElementById("container_number").setAttribute('disabled', 'disabled');
+
+                    } else {
+                        document.getElementById("container_number").removeAttribute('disabled');
+
+
+                        load_subcategory(this);
+                    }
+                }
+
+                function load_subcategory(selectObject) {
+                    var tmp_id = selectObject.value;
+                    $.ajax({
+                        type: "POST",
+                        url: "/get_sub_category",
+                        data: $('form').serialize(),
+                        success: function (response) {
+                            var json = jQuery.parseJSON(response)
+                            obj = Object.keys(json)
+
+                            $("#container_number")
+                                .find('option')
+                                .remove()
+                                .end()
+                                {#.append('<option value="0">Не выбрано</option>')#}
+                                {#.val('0');#}
+                                .attr('disabled', 'disabled');
+
+                            var value, key;
+
+                            if (Object.keys(obj).length > 0) {
+                                $("#container_number")
+                                    .removeAttr('disabled');
+                            }
+                            for (item in obj) {
+                                value = json[obj[item]];
+                                key = obj[item];
+                                $("#container_number").append($("<option></option>")
+                                    .attr("value", key)
+                                    .text(value));
+
+
+                            }
+
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+                }
+
+                $(document).ready(function () {
+                    choice_category(document.getElementById("warehouse_id"));
+                    $("#warehouse_id").change(function () {
+                        choice_category();
+                    });
+
+                    $("#container_number").change(function () {
+                    });
+                });
+            </script>
+        </div>
+    </div>
+{% endblock %}
